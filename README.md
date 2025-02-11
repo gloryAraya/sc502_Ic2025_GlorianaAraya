@@ -1,0 +1,1 @@
+# sc502_Ic2025_GlorianaAraya
