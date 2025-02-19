@@ -1,0 +1,27 @@
+body{
+    font-family: Tahoma;
+    font-size: 20px;
+    text-align: center;
+    position: absolute;
+    background-image: url('https://i.pinimg.com/736x/5c/6f/02/5c6f02e97e660b94e9020b4660d9e958.jpg');
+    background-size: cover;
+    top: 50%;
+    left: 50%;
+    margin: -100px  -200px;
+    width: 300px
+
+}
+
+h1{
+    color: rgb(12, 50, 240);
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#resultado.menor{
+    color:rgb(208, 44, 44);
+}
+
+#resultado.mayor{
+    color:green;
+}
