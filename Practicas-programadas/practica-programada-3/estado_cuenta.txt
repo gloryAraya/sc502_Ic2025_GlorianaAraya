@@ -1,0 +1,9 @@
+Estado de Cuenta
+ID: 99
+Descripcion: deposito
+Monto: 15
+
+Monto total de contado: $15
+Intereses (2.6%): ₡0.39
+Cashback (0.1%): ₡0.015
+Monto final a pagar: ₡15.375

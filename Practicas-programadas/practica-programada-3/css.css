@@ -1,0 +1,32 @@
+body {
+    font-family: sans-serif;
+    background-color: rgb(210, 230, 240);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+h1{
+    display: flex;
+}
+
+input, button {
+    padding: 10px;
+    margin: 5px;
+    width: 90%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background: #28a745;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    border: none;
+}
+
+button:hover {
+    background: #0a5119;
+}
