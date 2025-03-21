@@ -7,68 +7,88 @@
     <title>Practica-programada-3</title>
 </head>
 <body>
+
    <h1> Informe de Transacciones</h1> 
-   <form method="post">
+   <form method="post"><!--POST: enviar datos internamente..GET: envia datos mediante URL-->
    <h2>Detalle</h2>
-        <input type="text" name="id" placeholder="ID" required>
         <input type="text" name="desc" placeholder="Descripción" required>
-        <input type="number" step="0.01" name="monto" placeholder="Monto" required>
-        <button type="submit">Generar</button>
+        <input type="number" name="monto" placeholder="Monto" required>
+        <button type="submit" name="generar">Generar</button>  
    </form>
+
    <?php
-   $transacciones = [];
+   session_start();
+   
+   $_SESSION['transacciones'] = [];//para no sobreescribir el txt
+
+   if(!isset($_SESSION['transacciones'])) {//si no existe transacciones, crear transacciones
+       $_SESSION['transacciones'] = [];
+       $_SESSION['contador']='1';//contador de id
+   }
+
+   if (isset($_POST['generar'])){
+    $id=$_SESSION['contador'];
+    $desc= $_POST['desc'];
+    $monto= $_POST['monto'];
+    registrarTransaccion($id, $desc, $monto);//ingreasa los datos en function
+   }
+
    function registrarTransaccion($id, $desc, $monto) {
-    global $transacciones;
-        $transaccion = [
-            "id" => $id,
-            "desc" => $desc,
-            "monto" => $monto
-        ];
-    array_push($transacciones, $transaccion);
-}
+      $global= $transaccion= [
+           "id" => $id,
+           "desc" => $desc,
+           "monto" => $monto
+       ];
+       array_push($_SESSION['transacciones'], $transaccion);
+       $_SESSION['contador']++;
+   }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $id = $_POST['id'];
-    $desc = $_POST['desc'];
-    $monto = floatval($_POST['monto']);
-    registrarTransaccion($id, $desc, $monto);
-    generarEstadoDeCuenta();
-}
-
-function generarEstadoDeCuenta() {
-    global $transacciones;
+   function generarEstadoDeCuenta($transacciones){
     $montoTotal = 0;
-    echo "<h2>Estado de Cuenta</h2>";
-    
-    foreach ($transacciones as $transaccion) {
-        $montoTotal += $transaccion['monto'];
-    }
-    
-    
+        foreach ($transacciones as $transaccion) {
+            $montoTotal += $transaccion['monto'];
+        }
+
     $interes = $montoTotal * 0.026;
     $cashback = $montoTotal * 0.001;
     $montoFinal = $montoTotal + $interes - $cashback;
-    
-    echo "<p>Monto total: ₡".number_format($montoTotal,3,'.')."</p>";
-    echo "<p>Intereses (2.6%): ₡".number_format($interes,3,'.')."</p>";
-    echo "<p>Cashback (0.1%): ₡".number_format($cashback,3,'.')."</p>";
-    echo "<p><strong>Monto final: ₡".number_format($montoFinal,3,'.')."</strong></p>";
-    
-    $archivo = fopen("estado_cuenta.txt", "w");
-    fwrite($archivo, "Estado de Cuenta\n");
+
+    $archivo = fopen("estadodecuenta.txt", "w");//w:write, r: read
+    fwrite($archivo, "Estado de cuenta\n");
     foreach ($transacciones as $transaccion) {
         fwrite($archivo, "ID: {$transaccion['id']}\n");
         fwrite($archivo, "Descripcion: {$transaccion['desc']}\n");
-        fwrite($archivo, "Monto: {$transaccion['monto']}\n");
-    }
-    fwrite($archivo, "\nMonto total de contado: $$montoTotal\n");
+        fwrite($archivo, "Monto: {$transaccion['monto']}\n");}
+
+    fwrite($archivo, "Monto total de contado: $$montoTotal\n");
     fwrite($archivo, "Intereses (2.6%): ₡$interes\n");
     fwrite($archivo, "Cashback (0.1%): ₡$cashback\n");
     fwrite($archivo, "Monto final a pagar: ₡$montoFinal\n");
     fclose($archivo);
-}
-?>
+
+    return [
+        "montoTotal" => $montoTotal,
+        "interes" => $interes,
+        "cashback" => $cashback,
+        "montoFinal" => $montoFinal
+    ];
+   }
+
+   $estadoDeCuenta = generarEstadoDeCuenta($_SESSION['transacciones']);//mostrar la transaccion
+   ?>
+
+    <h2>Estado de Cuenta</h2>
+    <?php
+    foreach ($_SESSION['transacciones'] as $transaccion) {//$_SESSION leer transacciones
+        echo "<p>ID: {$transaccion['id']}</p>";
+        echo "<p>Descripcion: {$transaccion['desc']}</p>";
+        echo "<p>Monto Total: ₡{$transaccion['monto']}</p>";
+    }
+    ?>
+
+    <p>Intereses (2.6%): ₡<?php echo number_format($estadoDeCuenta ["interes"],2);?></p>
+    <p>Cashback (0.1%): ₡<?php echo number_format($estadoDeCuenta["cashback"],2);?></p>
+    <p> Monto final: ₡<?php echo number_format($estadoDeCuenta["montoFinal"],2);?></p>
+    
 </body>
 </html>
-
-

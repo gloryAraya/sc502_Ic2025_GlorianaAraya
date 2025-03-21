@@ -1,0 +1,8 @@
+Estado de cuenta
+ID: 1
+Descripcion: deposito
+Monto: 50000
+Monto total de contado: $50000
+Intereses (2.6%): ₡1300
+Cashback (0.1%): ₡50
+Monto final a pagar: ₡51250
