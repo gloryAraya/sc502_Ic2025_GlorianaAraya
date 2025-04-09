@@ -1,0 +1,14 @@
+*{
+    text-align: center;
+    padding: 20px; 
+   
+
+}
+input{
+    padding: 10px;
+    margin: 10px;
+}
+
+label#total {
+    font-weight: bold;
+}
